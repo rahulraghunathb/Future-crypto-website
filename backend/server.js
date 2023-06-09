@@ -9,7 +9,9 @@ const cors = require('cors');
 
 
 app.use(cors({
-  origin: ["http://localhost:3000/","https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=6&page=1&sparkline=false"]
+  origin: ["http://localhost:3000/",
+  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=6&page=1&sparkline=false", 
+  "https://futute-crypto.onrender.com"]
 }));
 
 app.use(express.urlencoded({extended:true}));
