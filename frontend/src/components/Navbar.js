@@ -1,10 +1,23 @@
 import React, {useState} from 'react'
 import {FaBars, FaTimes} from 'react-icons/fa'
 import './Navbar.css'
+import AuthModal from './AuthModal';
 
 const Navbar = () => {
 const [click, setClick] = useState(false)
 const handleClick = () => setClick(!click)
+const [isModalOpen, setIsModalOpen] = useState(false);
+const [selectedForm, setSelectedForm] = useState(null);
+
+const openModal = (form) => {
+  setSelectedForm(form);
+  setIsModalOpen(true);
+};
+
+const closeModal = () => {
+  setSelectedForm(null);
+  setIsModalOpen(false);
+};
 
 
     return (
@@ -32,10 +45,17 @@ const handleClick = () => setClick(!click)
                         <a href='#foot_id'>Contact</a>
                     </li>
                 </ul>
-                <div className='btn-group'>
-                    <button className='btn'>Connect Wallet</button>
+                <div className='button_div'>
+                <ul>
+                <button className='button_2' onClick={() => openModal('login')}>Login</button>
+                    </ul>
+                <ul>
+                <button  className='button_2' onClick={() => openModal('register')}>Register</button>
+                </ul>
+                    {/* <button className='btn'>Connect Wallet</button> */}
                 </div>
             </div>
+            <AuthModal isOpen={isModalOpen} onClose={closeModal} selectedForm={selectedForm} />
         </div>
     )
 }

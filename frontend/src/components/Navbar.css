@@ -6,7 +6,7 @@
     position: sticky;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 5;
 }
 
 .header .container {
@@ -39,8 +39,22 @@
     display: none;
     cursor: pointer;
 }
-
-
+.button_2 {
+    padding: 10px;
+    background-color: var(--primary);
+    /* border: 2px solid var(--primary); Add border color here */
+    color: white;
+    cursor: pointer;
+    margin: 10px;
+  }
+  .button_div {
+    display: flex;
+    justify-content: space-between; /* Adjust as needed */
+    margin-right: 30px;
+  }
+  .button_2:hover {
+    box-shadow: rgb(0 0 0 / 15%) 0px 8px 24px;
+  }
 @media screen and (max-width:1240px) {
     .hamburger {
         display: flex;
