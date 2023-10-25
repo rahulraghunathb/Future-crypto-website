@@ -44,6 +44,7 @@ app.get('/', (req, res) => {
   res.send('This is the server!')
 })
 
+//newsletter subscribtion
 app.post('/subscribe', async (req, res) => {
   const { email } = req.body
   try {
@@ -90,18 +91,16 @@ app.post('/login', async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // Successful login
-      // req.session.userId = user._id
-      res.status(200).json({ message: 'User logged in successfully' })
       console.info('User logged in successfully')
-      // res.redirect('/')
+      res.status(200).json({ message: 'User logged in successfully' })
     } else {
       // Failed login
-      // res.redirect('/login?error=1')
-      res.status(500).json({ error: 'Failed to login' })
+      console.info('Failed to log in')
+      res.status(401).json({ error: 'Failed to login' })
     }
   } catch (error) {
     console.error('Error during login:', error)
-    res.status(400).json({ error: 'Failed to login' })
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
