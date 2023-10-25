@@ -73,6 +73,7 @@ app.post('/register', async (req, res) => {
 
     const newUser = new UserModel({ email, password: hashedPassword })
     await newUser.save()
+    console.info('User registered successfully')
     res.status(200).json({ message: 'User registered successfully' })
   } catch (error) {
     console.error('Error registering user:', error)
@@ -89,15 +90,18 @@ app.post('/login', async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // Successful login
-      req.session.userId = user._id
-      res.redirect('/dashboard')
+      // req.session.userId = user._id
+      res.status(200).json({ message: 'User logged in successfully' })
+      console.info('User logged in successfully')
+      // res.redirect('/')
     } else {
       // Failed login
-      res.redirect('/login?error=1')
+      // res.redirect('/login?error=1')
+      res.status(500).json({ error: 'Failed to login' })
     }
   } catch (error) {
     console.error('Error during login:', error)
-    res.status(500).json({ error: 'Failed to login' })
+    res.status(400).json({ error: 'Failed to login' })
   }
 })
 
