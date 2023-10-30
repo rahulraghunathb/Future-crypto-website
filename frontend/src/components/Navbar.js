@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
-import {FaBars, FaTimes} from 'react-icons/fa'
+import {FaBars, FaTimes, FaSignOutAlt} from 'react-icons/fa'
 import './Navbar.css'
 import AuthModal from './AuthModal';
+import { useAuth } from './AuthContext';
 
 const Navbar = () => {
+const { user, logout } = useAuth();
 const [click, setClick] = useState(false)
 const handleClick = () => setClick(!click)
 const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +20,9 @@ const closeModal = () => {
   setSelectedForm(null);
   setIsModalOpen(false);
 };
+const handleLogout = () => {
+    logout();
+  };
 
 
     return (
@@ -47,13 +52,23 @@ const closeModal = () => {
                 </ul>
                 <div className='button_div'>
                 <ul>
-                <button className='button_2' onClick={() => openModal('login')}>Login</button>
-                    </ul>
+                    {user && user.email ? ( 
+                        <p className='user'>{user.email.split('@')[0]}</p>
+                ) : (
+                    <button className='button_2' onClick={() => openModal('login')}>Login</button>
+                 )}
+                </ul>
                 <ul>
-                <button  className='button_2' onClick={() => openModal('register')}>Register</button>
+                    {user && user.email ? ( 
+                      <button className='logout' onClick={handleLogout}>
+                          <FaSignOutAlt /> logout
+                      </button>
+                ) : (
+                  <button  className='button_2' onClick={() => openModal('register')}>Register</button>
+                 )}
                 </ul>
                     {/* <button className='btn'>Connect Wallet</button> */}
-                </div>
+                </div>                 
             </div>
             <AuthModal isOpen={isModalOpen} onClose={closeModal} selectedForm={selectedForm} />
         </div>

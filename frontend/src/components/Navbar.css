@@ -55,6 +55,16 @@
   .button_2:hover {
     box-shadow: rgb(0 0 0 / 15%) 0px 8px 24px;
   }
+  .user{
+    margin-top: 5px;
+    font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'sans-serif';
+  }
+
+.logout{
+    margin-left: 20px;
+}
 @media screen and (max-width:1240px) {
     .hamburger {
         display: flex;
@@ -86,5 +96,17 @@
 
     .nav-menu a {
         font-size: 1.2rem;
+    }
+    .user{
+        margin-top: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-left: 10px;
+      }
+    
+    .logout{
+        padding: 4px;
+        margin: 0px 0px 0px 10px;
+        /* margin-left: 20px; */
     }
 }

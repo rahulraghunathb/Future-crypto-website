@@ -92,22 +92,23 @@ app.get(
   '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    res.redirect('/dashboard')
+    // res.redirect('/dashboard')
+    res.status(200)
   }
 )
 
-app.get('/dashboard', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.send('Welcome to the dashboard, ' + req.user.displayName)
-  } else {
-    res.redirect('/')
-  }
-})
+// app.get('/dashboard', (req, res) => {
+//   if (req.isAuthenticated()) {
+//     res.send('Welcome to the dashboard, ' + req.user.displayName)
+//   } else {
+//     res.redirect('/')
+//   }
+// })
 
-app.get('/logout', (req, res) => {
-  req.logout()
-  res.redirect('/')
-})
+// app.get('/logout', (req, res) => {
+//   req.logout()
+//   res.redirect('/')
+// })
 
 // Start the server
 const PORT = process.env.PORT || 3000

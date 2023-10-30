@@ -92,7 +92,7 @@ app.post('/login', async (req, res) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       // Successful login
       console.info('User logged in successfully')
-      res.status(200).json({ message: 'User logged in successfully' })
+      res.status(200).json({ message: 'User logged in successfully' , email:user.email })
     } else {
       // Failed login
       console.info('Failed to log in')

@@ -2,20 +2,37 @@ import { React, useState } from 'react'
 import Modal from 'react-modal'
 import { FaGoogle } from 'react-icons/fa'
 import './authmodal.css'
-import PasswordResetModal from './ForgotPassword'
 import axios from 'axios'
+import { useAuth } from './AuthContext'; 
+import SuccessModal from './SuccessModal';
 
 Modal.setAppElement('#root') // For accessibility
+// let data = null;
 
 const AuthModal = ({ isOpen, onClose, selectedForm }) => {
   const isLoginForm = selectedForm === 'login'
-  const [isPasswordResetModalOpen, setIsPasswordResetModalOpen] =
-    useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const { login } = useAuth();
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  // const [isRegistrationSuccess, setRegistrationSuccess] = useState(false);
+  // const [message, setMessage] = useState('');
+  
+
+  const closeModal = () => {
+    onClose(); 
+  };
+  const openSuccessModal = () => {
+    setIsSuccessModalOpen(true);
+  };
+
+  const closeSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+  };
+
 
   const handleRegistration = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const response = await fetch('/register', {
         method: 'POST',
@@ -23,23 +40,29 @@ const AuthModal = ({ isOpen, onClose, selectedForm }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email, password })
-      })
-
+      });
+  
       if (response.status === 200) {
-        alert('Registration successful!! please login with your credentials')
-        // You can redirect the user to their profile or another page here.
+        // setRegistrationSuccess(true);
+        openSuccessModal();
+        // setMessage('Registration successful!! please login with your credentials');
+        // alert('Registration successful!! please login with your credentials');
       } else if (response.status === 400) {
-        alert('Email is already in use please login with your credentials')
+        // setRegistrationSuccess(true);
+        // setMessage('Email is already in use please login with your credentials');
+        alert('Email is already in use please login with your credentials');
       } else if (response.status === 500) {
-        alert('Failed to register user')
+        // setMessage('Failed to register user');
+        alert('Failed to register user');
       } else {
-        alert('An unexpected error occurred')
+        // setMessage('An unexpected error occurred');
+        alert('An unexpected error occurred');
       }
     } catch (error) {
-      alert('Registration failed. Please try again.')
+      // setMessage('Registration failed. Please try again.');
+      alert('Registration failed. Please try again.');
     }
   }
-
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
@@ -50,19 +73,21 @@ const AuthModal = ({ isOpen, onClose, selectedForm }) => {
         },
         body: JSON.stringify({ email, password })
       })
-
       if (response.status === 200) {
         // Successful login
-        alert('Login successful')
+        // data = await response.json();
+        login({ email});
+        // alert(`User Email: ${data.email}`);
+        closeModal();
         // You can redirect the user to their dashboard or another page here.
       } else if (response.status === 401) {
-        alert('Failed to register user')
+        alert('Failed to register login')
       }
     } catch (error) {
       alert('Login failed. Please try again.')
     }
   }
-
+ 
   // const handleGoogleSignIn = async () => {
   //   try {
   //     const response = await axios.get('/auth/google');
@@ -88,33 +113,13 @@ const AuthModal = ({ isOpen, onClose, selectedForm }) => {
       console.error('Google authentication error:', error)
     }
   }
-  // const handleLogout = () => {
-  //   // Handle user logout, e.g., by making an API request to log the user out
-  //   // ...
-
-  //   // After successful logout, set isAuthenticated to false
-  //   setIsAuthenticated(false);
-  // };
-
-  const openPasswordResetModal = () => {
-    setIsPasswordResetModalOpen(true)
-  }
-
-  const closePasswordResetModal = () => {
-    setIsPasswordResetModalOpen(false)
-  }
-
-  const handlePasswordReset = () => {
-    // Implement your password reset logic here
-    // This function will be called when the "Reset Password" button is clicked
-    // You can send a reset password email to the entered email address
-  }
-
+  
   return (
     <Modal className="modal_card" isOpen={isOpen} onRequestClose={onClose}>
-      <button onClick={onClose} className="close-button">
+        <button onClick={onClose} className="close-button">
         <span aria-hidden="true">&times;</span>
-      </button>
+      </button>   
+      <SuccessModal isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
       <div className="form-container">
         <div className="form">
           <h3 className="form-heading">
@@ -135,19 +140,6 @@ const AuthModal = ({ isOpen, onClose, selectedForm }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {isLoginForm ? (
-                <p
-                  className="forgot-password "
-                  onClick={openPasswordResetModal}
-                >
-                  Forgot password?
-                </p>
-              ) : null}
-              {isLoginForm ? (
-                <p className="forgot-password">or</p>
-              ) : (
-                <p className="forgot-password">or</p>
-              )}
               {/* <button className='button'onClick={handleGoogleSignIn}> <FaGoogle/> {isLoginForm ? 'Sign in with Google':'Sign up with Google'}</button> */}
               <button onClick={handleGoogleSignIn}>Login with Google</button>
               <button
@@ -160,12 +152,6 @@ const AuthModal = ({ isOpen, onClose, selectedForm }) => {
           </form>
         </div>
       </div>
-
-      <PasswordResetModal
-        isOpen={isPasswordResetModalOpen}
-        onClose={closePasswordResetModal}
-        onReset={handlePasswordReset}
-      />
     </Modal>
   )
 }
